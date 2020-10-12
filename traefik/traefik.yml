@@ -1,0 +1,27 @@
+entryPoints:
+  web:
+    address: :80
+  websecure:
+    address: :443
+
+providers:
+  docker:
+    network: traefik
+    exposedByDefault: false
+
+api:
+  insecure: true
+  dashboard: true
+
+log:
+  level: INFO
+accessLog: {}
+
+certificatesResolvers:
+  ctresolver:
+    acme:
+      email: coursetable.at.yale@gmail.com
+      storage: certs/acme.json
+      httpchallenge:
+        entrypoint: web
+
