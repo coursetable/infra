@@ -8,14 +8,14 @@ services:
     environment:
       DATABASE_URL: postgresql://umami:umami@postgres:5432/umami
       DATABASE_TYPE: postgresql
-      HASH_SALT: ${HASH_SALT}
+      HASH_SALT: ${HASH_SALT?hash_salt}
     depends_on:
       - postgres
     labels:
       traefik.enable: true
-      traefik.http.routers.coursetable.rule: Host(`umami.coursetable.com`)
-      traefik.http.routers.coursetable.tls: true
-      traefik.http.routers.coursetable.tls.certResolver: ctresolver
+      traefik.http.routers.ct-umami.rule: Host(`umami.coursetable.com`)
+      traefik.http.routers.ct-umami.tls: true
+      traefik.http.routers.ct-umami.tls.certResolver: ctresolver
     networks:
       - traefik
       - default
