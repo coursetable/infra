@@ -1,0 +1,24 @@
+version: '3.2'
+services:
+  proxy:
+    image: node:latest
+    restart: always
+    ports:
+      - '8020:8080'
+    volumes:
+      - .:/app
+    user: '1000'
+    command: sh -c 'cd /app && yarn && yarn start'
+    labels:
+      traefik.enable: true
+      traefik.http.routers.coursetable-old.rule: Host(`old.coursetable.com`)
+      traefik.http.routers.coursetable-old.tls: true
+      traefik.http.routers.coursetable-old.tls.certResolver: ctresolver
+    networks:
+      - traefik
+      - default
+
+
+networks:
+  traefik:
+    external: true
