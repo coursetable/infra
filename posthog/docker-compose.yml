@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+    db:
+        image: postgres:alpine
+        restart: always
+        environment:
+            POSTGRES_DB: posthog
+            POSTGRES_PASSWORD: posthog
+            POSTGRES_USER: posthog
+    redis:
+        image: redis:alpine
+        restart: always
+    web:
+        image: posthog/posthog:latest
+        restart: always
+        environment:
+            DATABASE_URL: postgres://posthog:posthog@db:5432/posthog
+            IS_DOCKER: 'true'
+            IS_BEHIND_PROXY: 'true'
+            REDIS_URL: redis://redis:6379/
+            SECRET_KEY: ${POSTHOG_SECRET_KEY?secret key}
+        depends_on:
+            - db
+            - redis
+        links:
+            - db:db
+            - redis:redis
+        labels:
+            traefik.enable: true
+            traefik.http.routers.ct-posthog.rule: Host(`hog.coursetable.com`)
+            traefik.http.routers.ct-posthog.tls: true
+            traefik.http.routers.ct-posthog.tls.certResolver: ctresolver
+        networks:
+            - default
+            - traefik
+        ports:
+            - 4004:8000
+
+networks:
+    traefik:
+        external: true
