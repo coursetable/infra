@@ -1,0 +1,6 @@
+
+# Enable gzip compression
+http:
+  middlewares:
+    gzip-compress:
+      compress: {}

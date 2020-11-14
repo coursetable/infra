@@ -13,6 +13,8 @@ providers:
   docker:
     network: traefik
     exposedByDefault: false
+  file:
+    directory: /dynamic
 
 api:
   insecure: true
