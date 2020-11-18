@@ -17,10 +17,10 @@ fi
 docker-compose exec mysql sh -c 'exec mysqldump yaleplus -uroot -p"$MYSQL_ROOT_PASSWORD"' > /tmp/yaleplus.sql
 docker-compose exec mysql sh -c 'exec mysqldump yale_advanced_oci -uroot -p"$MYSQL_ROOT_PASSWORD"' > /tmp/yale_advanced_oci.sql
 
-pushd /tmp
+pushd /tmp > /dev/null
 tar -czf "$BACKUP_TAR_GZ_FILE" yaleplus.sql yale_advanced_oci.sql
 rm -f yaleplus.sql yale_advanced_oci.sql
-popd
+popd > /dev/null
 
 # Dump the worksheet_courses table every day.
 WORKSHEET_DUMP_FILE="worksheets/worksheet-${CURRENT_DATE}.sql"
