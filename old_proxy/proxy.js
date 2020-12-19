@@ -18,6 +18,7 @@ app.use(
     headers: {
       host: 'coursetable.com',
     },
+    secure: false,
   })
 );
 
