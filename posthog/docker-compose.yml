@@ -30,7 +30,8 @@ services:
             traefik.enable: true
             traefik.http.routers.ct-posthog.rule: Host(`hog.coursetable.com`)
             traefik.http.routers.ct-posthog.tls: true
-            traefik.http.routers.ct-posthog.tls.certResolver: ctresolver
+            traefik.http.routers.ct-posthog.tls.certResolver: tls_resolver
+            traefik.http.routers.ct-posthog.middlewares: SecureTLS
         networks:
             - default
             - traefik
