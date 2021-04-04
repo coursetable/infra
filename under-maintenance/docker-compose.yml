@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 
 services:
   web:
@@ -7,7 +7,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.under-maintenance.priority: 2
-      traefik.http.routers.under-maintenance.rule: Host(`coursetable.com`, `www.coursetable.com`, `beta.coursetable.com`)
+      traefik.http.routers.under-maintenance.rule: Host(`coursetable.com`, `api.coursetable.com`, `www.coursetable.com`, `beta.coursetable.com`)
       traefik.http.routers.under-maintenance.tls: true
       traefik.http.routers.under-maintenance.tls.certResolver: ctresolver
     networks:
