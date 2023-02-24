@@ -21,7 +21,12 @@ tar -czf "$BACKUP_TAR_GZ_FILE" yaleplus.sql
 rm -f yaleplus.sql
 popd > /dev/null
 
+# Delete backups older than 30 days
+find $(pwd)/db_dumps/ -iname "*.tar.gz" -mtime +30 -delete
+
 # Dump the worksheet_courses table every day.
 WORKSHEET_DUMP_FILE="worksheets/worksheet-${CURRENT_DATE}.sql"
 docker-compose exec -T mysql sh -c 'exec mysqldump yaleplus WorksheetCourses -uroot -p"$MYSQL_ROOT_PASSWORD"' > ${WORKSHEET_DUMP_FILE}
 
+# Delete worksheet_courses backups older than 30 days
+find $(pwd)/worksheets/ -iname "*.sql" -mtime +30 -delete
