@@ -2,7 +2,7 @@ version: '3'
 
 services:
     db:
-        image: postgres:alpine
+        image: postgres:13-alpine
         restart: always
         environment:
             POSTGRES_DB: posthog
@@ -20,6 +20,7 @@ services:
             IS_BEHIND_PROXY: 'true'
             REDIS_URL: redis://redis:6379/
             SECRET_KEY: ${POSTHOG_SECRET_KEY?secret key}
+            SITE_URL: https://hog.coursetable.com
         depends_on:
             - db
             - redis
@@ -30,7 +31,7 @@ services:
             traefik.enable: true
             traefik.http.routers.ct-posthog.rule: Host(`hog.coursetable.com`)
             traefik.http.routers.ct-posthog.tls: true
-            traefik.http.routers.ct-posthog.tls.certResolver: tls_resolver
+            traefik.http.routers.ct-posthog.tls.certResolver: default
             traefik.http.routers.ct-posthog.middlewares: SecureTLS
         networks:
             - default
