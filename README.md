@@ -2,7 +2,7 @@
 
 This repository details all of the underlying production infrastructure for databases, reverse proxies, and administration tools that the [coursetable](https://github.com/coursetable/coursetable/) abstracts away.
 
-The infrastructure is currently designed to provision on a monolithic VM. However, it is configuration-agnoistic. Its only dependencies are `docker` and `docker compose`.
+The infrastructure is currently designed to provision on a monolithic VM. However, it is configuration-agonistic. Its only dependencies are `docker` and `docker compose`.
 
 Each directory denotes a separate Docker Compose configuration, each with its own network.
 
