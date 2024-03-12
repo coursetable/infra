@@ -1,25 +1,26 @@
-version: '3.2'
+version: '3.5'
+
 services:
   mysql:
     image: mariadb:latest
-    container_name: mysql
+    container_name: ${MYSQL_HOST?mysql_db}
     restart: always
     command: --default-authentication-plugin=mysql_native_password
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD?password}
     ports:
       - '3306:3306'
+    networks:
+      - mysql
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
+    image: phpmyadmin:latest
     container_name: phpmyadmin
     restart: always
     depends_on:
       - mysql
-    restart: always
     environment:
-      PMA_HOST: mysql
+      PMA_HOST: ${MYSQL_HOST?mysql_db}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD?password}
     ports:
       - '8081:80'
@@ -30,8 +31,11 @@ services:
       traefik.http.routers.ct-pma.tls.certResolver: ctresolver
     networks:
       - traefik
-      - default
+      - mysql
 
 networks:
   traefik:
     external: true
+  mysql:
+    name: mysql
+    driver: bridge

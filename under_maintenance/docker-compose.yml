@@ -4,6 +4,7 @@ services:
   web:
     build: .
     restart: always
+    container_name: under_maintenance
     labels:
       traefik.enable: true
       traefik.http.routers.under-maintenance.priority: 2
@@ -12,8 +13,11 @@ services:
       traefik.http.routers.under-maintenance.tls.certResolver: ctresolver
     networks:
       - traefik
-      - default
+      - under_maintenance
 
 networks:
   traefik:
     external: true
+  under_maintenance:
+    name: under_maintenance
+    driver: bridge
