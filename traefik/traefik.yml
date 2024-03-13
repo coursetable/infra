@@ -13,6 +13,7 @@ providers:
   docker:
     network: traefik
     exposedByDefault: false
+    useBindPortIP: true
   file:
     directory: /dynamic
 

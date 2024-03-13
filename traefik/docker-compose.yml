@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   reverse-proxy:
-    image: traefik:2.3
+    image: traefik:latest
     container_name: traefik
     restart: always
     ports:
