@@ -1,0 +1,62 @@
+version: '3.5'
+
+services:
+  db:
+    container_name: ${DB_HOST?db}
+    image: postgres
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD?password}
+      POSTGRES_DB: ${DB_NAME?coursetable}
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 0.5s
+      timeout: 10s
+      retries: 60
+    volumes:
+      - /home/app/db/data:/var/lib/postgresql/data
+    networks:
+      - db
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    ports:
+      - 8081:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL?pgadmin@coursetable.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD?password}
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+    labels:
+      traefik.enable: true
+      traefik.http.routers.ct-pma.rule: Host(`pgadmin.coursetable.com`)
+      traefik.http.routers.ct-pma.tls: true
+      traefik.http.routers.ct-pma.tls.certResolver: ctresolver
+    networks:
+      - db
+      - traefik
+
+  # This temporar container is used for migrating data from MySQL to Postgres
+  pgloader:
+    image: dimitri/pgloader:latest
+    container_name: pgloader
+    command: bash -c "sleep 10; pgloader $MYSQL_CONNECTION_STRING $POSTGRES_CONNECTION_STRING"
+    environment:
+      - MYSQL_CONNECTION_STRING: ${MYSQL_URL?mysql_url}
+      - POSTGRES_CONNECTION_STRING: ${DB_URL?postgres_url}
+    depends_on:
+      - db
+    networks:
+      - db
+      - mysql
+
+networks:
+  traefik:
+    external: true
+  db:
+    name: db
+    driver: bridge
+  mysql:
+    external: true
