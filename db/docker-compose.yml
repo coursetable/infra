@@ -31,23 +31,23 @@ services:
       - ./servers.json:/pgadmin4/servers.json
     labels:
       traefik.enable: true
-      traefik.http.routers.ct-pma.rule: Host(`pgadmin.coursetable.com`)
-      traefik.http.routers.ct-pma.tls: true
-      traefik.http.routers.ct-pma.tls.certResolver: ctresolver
+      traefik.http.routers.ct-pga.rule: Host(`pgadmin.coursetable.com`)
+      traefik.http.routers.ct-pga.tls: true
+      traefik.http.routers.ct-pga.tls.certResolver: ctresolver
     networks:
       - db
       - traefik
 
   # This temporar container is used for migrating data from MySQL to Postgres
-  pgloader:
-    image: dimitri/pgloader:latest
-    container_name: pgloader
-    command: bash -c "sleep 10; pgloader $MYSQL_URL $DB_URL"
-    depends_on:
-      - db
-    networks:
-      - db
-      - mysql
+  # pgloader:
+  #   image: dimitri/pgloader:latest
+  #   container_name: pgloader
+  #   command: bash -c "sleep 10; pgloader $MYSQL_URL $DB_URL"
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - db
+  #     - mysql
 
 networks:
   traefik:
