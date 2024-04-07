@@ -42,10 +42,7 @@ services:
   pgloader:
     image: dimitri/pgloader:latest
     container_name: pgloader
-    command: bash -c "sleep 10; pgloader $MYSQL_CONNECTION_STRING $POSTGRES_CONNECTION_STRING"
-    environment:
-      - MYSQL_CONNECTION_STRING: ${MYSQL_URL?mysql_url}
-      - POSTGRES_CONNECTION_STRING: ${DB_URL?postgres_url}
+    command: bash -c "sleep 10; pgloader $MYSQL_URL $DB_URL"
     depends_on:
       - db
     networks:
