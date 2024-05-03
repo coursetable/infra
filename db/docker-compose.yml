@@ -40,11 +40,13 @@ services:
 
   pgbouncer:
     image: edoburu/pgbouncer
-    container_name: pgbouncer
+    container_name: ${DB_BOUNCER?pgbouncer}
     restart: always
     environment:
       DATABASE_URL: postgresql://${DB_USER}:${DB_ROOT_PASSWORD}@${DB_HOST}:${DB_PORT}/postgres
       AUTH_TYPE: scram-sha-256
+      QUERY_WAIT_TIMEOUT: 0
+      MAX_CLIENT_CONN: 500
     ports:
       - '5432:5432'
     networks:
