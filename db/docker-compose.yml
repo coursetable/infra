@@ -5,8 +5,6 @@ services:
     container_name: ${DB_HOST?db}
     restart: always
     image: postgres
-    ports:
-      - '5433:5432'
     environment:
       POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD?password}
       POSTGRES_DB: ${DB_NAME?coursetable}
@@ -40,16 +38,17 @@ services:
       - db
       - traefik
 
-  # This temporar container is used for migrating data from MySQL to Postgres
-  # pgloader:
-  #   image: dimitri/pgloader:latest
-  #   container_name: pgloader
-  #   command: bash -c "sleep 10; pgloader $MYSQL_URL $DB_URL"
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - db
-  #     - mysql
+  pgbouncer:
+    image: edoburu/pgbouncer
+    container_name: pgbouncer
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://${DB_USER}:${DB_ROOT_PASSWORD}@${DB_HOST}:${DB_PORT}/postgres
+      AUTH_TYPE: scram-sha-256
+    ports:
+      - '5432:5432'
+    networks:
+      - db
 
 networks:
   traefik:
@@ -57,5 +56,3 @@ networks:
   db:
     name: db
     driver: bridge
-  mysql:
-    external: true
