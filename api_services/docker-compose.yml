@@ -37,5 +37,3 @@ networks:
   api_services:
     name: api_services
     driver: bridge
-  api:
-    external: true
