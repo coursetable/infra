@@ -45,8 +45,8 @@ services:
     environment:
       DATABASE_URL: postgresql://${DB_USER}:${DB_ROOT_PASSWORD}@${DB_HOST}:${DB_PORT}/postgres
       AUTH_TYPE: scram-sha-256
-      QUERY_WAIT_TIMEOUT: 0
-      MAX_CLIENT_CONN: 500
+      QUERY_WAIT_TIMEOUT: 6000
+      MAX_CLIENT_CONN: 1000
     ports:
       - '5432:5432'
     networks:
