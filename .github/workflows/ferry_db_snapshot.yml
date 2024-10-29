@@ -29,7 +29,7 @@ jobs:
       - name: Update Doppler Secret
         run: |
           doppler setup -p coursetable -c dev
-          doppler secrets set FERRY_DUMP_URL="$(cat output.txt)"
+          doppler secrets set FERRY_DUMP_URL="$(cat output.txt)" > /dev/null
         
       - name: Delete Old Snapshots
         run: |
