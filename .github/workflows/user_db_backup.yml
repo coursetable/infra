@@ -16,4 +16,5 @@ jobs:
     steps:
       - name: Backup User DB
         run: |
-          bash /home/app/infra/db/cron_script.sh
+          cd /home/app/infra/db
+          bash cron_script.sh
