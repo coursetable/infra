@@ -1,0 +1,37 @@
+name: Ferry DB Snapshot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'db/**'
+      - '.github/workflows/ferry_db_snapshot.yml'
+  schedule:
+    - cron: '0 0 * * 1' # Every Monday
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: self-hosted
+    steps:
+      - name: Dump Ferry DB
+        run: |
+          docker exec db pg_dump -U postgres -x postgres > "/home/app/ferry_snapshots/$(date +%F).sql"
+
+      - name: Upload to R2
+        run: |
+          rclone copy "/home/app/ferry_snapshots/$(date +%F).sql" r2:ferry-backup/
+      
+      - name: Create R2 Signed URL
+        run: |
+          rclone link "r2:ferry-backup/$(date +%F).sql" | grep -o 'https://[^"]*' > output.txt
+
+      - name: Update Doppler Secret
+        run: |
+          doppler setup -p coursetable -c dev
+          doppler secrets set FERRY_DUMP_URL="$(cat output.txt)"
+        
+      - name: Delete Old Snapshots
+        run: |
+          find /home/app/ferry_snapshots -type f -mtime +30 -delete
+          rclone delete r2:ferry-backup/ --min-age 30d

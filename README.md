@@ -12,19 +12,18 @@ Below is the list of every network and its attached services (including those de
         - Container Name / Docker Hostname: `traefik`
         - Purpose: Reverse proxy router for all incoming requests
         - Access: Public (*coursetable.com)
-- **[`mysql`](mysql/)**
-    - `mysql`
-        - Container Name / Docker Hostname: `${MYSQL_HOST}`
-        - Purpose: Standing MySQL DB for all user data
-        - Access: Local
-    - `phpmyadmin`
-        - Container Name / Docker Hostname:`phpmyadmin`
-        - Purpose: PHP My Admin GUI for MySQL DB
-        - Access: Authorized Public [pma.coursetable.com](https://pma.coursetable.com)
-- **[`ferry`](ferry/)**
+- **[`db`](db/)**
     - `db`
-        - Container Name / Docker Hostname: `${FERRY_HOST}`
-        - Purpose: Standing Postgres DB for all course data (see [ferry](https://github.com/coursetable/ferry/))
+        - Container Name / Docker Hostname: `${DB_HOST?db}`
+        - Purpose: Standing Postgres DB for all course data (see [ferry](https://github.com/coursetable/ferry/)) and user data
+        - Access: Local
+    - `pgadmin`
+        - Container Name / Docker Hostname: `pgadmin`
+        - Purpose: DB Management GUI
+        - Access: Authorized Public
+    - `pgbouncer`
+        - Container Name / Docker Hostname: `pgbouncer`
+        - Purpose: Connection pooler for Postgres DB
         - Access: Authorized Public
 - **[`${API_NETWORK}`](https://github.com/coursetable/coursetable/tree/master/api/)**
     - `api`
