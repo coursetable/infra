@@ -7,7 +7,7 @@ on:
       - 'db/**'
       - '.github/workflows/user_db_backup.yml'
   schedule:
-    - cron: '0 0 * * 0' # Every Sunday
+    - cron: '0 0 * * *' # Every day
   workflow_dispatch:
 
 jobs:
