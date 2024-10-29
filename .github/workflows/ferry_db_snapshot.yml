@@ -34,4 +34,3 @@ jobs:
       - name: Delete Old Snapshots
         run: |
           find /home/app/ferry_snapshots -type f -mtime +30 -delete
-          rclone delete r2:ferry-backup/ --min-age 30d
