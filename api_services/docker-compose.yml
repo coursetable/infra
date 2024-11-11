@@ -32,7 +32,7 @@ services:
     volumes:
       - /home/app/redis/prod-data:/data
     environment:
-      - REDIS_ARGS=--save 60 200 --appendonly yes
+      - REDIS_ARGS=--save 60 1000 --appendonly yes
     healthcheck:
       test: [ 'CMD', 'redis-cli', 'ping' ]
       interval: 0.5s
