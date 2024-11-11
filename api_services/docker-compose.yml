@@ -17,9 +17,9 @@ services:
       retries: 60
     labels:
       traefik.enable: true
-      traefik.http.routers.ct-pga.rule: Host(`gql.coursetable.com`)
-      traefik.http.routers.ct-pga.tls: true
-      traefik.http.routers.ct-pga.tls.certResolver: ctresolver
+      traefik.http.routers.ct-gql.rule: Host(`gql.coursetable.com`)
+      traefik.http.routers.ct-gql.tls: true
+      traefik.http.routers.ct-gql.tls.certResolver: ctresolver
     networks:
       - db
       - traefik
