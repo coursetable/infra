@@ -1,11 +1,11 @@
 services:
   db:
-    container_name: ${DB_HOST?db}
+    container_name: ${DB_HOST?DB_HOST}
     restart: always
     image: postgres:13
     environment:
-      POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD?password}
-      POSTGRES_DB: ${DB_NAME?coursetable}
+      POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD?DB_ROOT_PASSWORD}
+      POSTGRES_DB: ${DB_NAME?DB_NAME}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 0.5s
@@ -23,8 +23,8 @@ services:
     ports:
       - 8082:80
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL?pgadmin@coursetable.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD?password}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL?PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD?PGADMIN_PASSWORD}
     volumes:
       - ./servers.json:/pgadmin4/servers.json
     labels:
@@ -38,10 +38,10 @@ services:
 
   pgbouncer:
     image: edoburu/pgbouncer:latest
-    container_name: ${DB_BOUNCER?pgbouncer}
+    container_name: ${DB_BOUNCER?DB_BOUNCER}
     restart: always
     environment:
-      DATABASE_URL: postgresql://${DB_USER}:${DB_ROOT_PASSWORD}@${DB_HOST}:${DB_PORT}/ferry
+      DATABASE_URL: postgresql://${DB_USER?DB_USER}:${DB_ROOT_PASSWORD?DB_ROOT_PASSWORD}@${DB_HOST?DB_HOST}:${DB_PORT?DB_PORT}/${FERRY_DB_NAME?FERRY_DB_NAME}
       AUTH_TYPE: scram-sha-256
       QUERY_WAIT_TIMEOUT: 600
       MAX_CLIENT_CONN: 5000
