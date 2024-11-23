@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Dump Ferry DB
         run: |
-          docker exec db pg_dump -U postgres -x postgres > "/home/app/ferry_snapshots/$(date +%F).sql"
+          docker exec db pg_dump -U postgres -x ferry > "/home/app/ferry_snapshots/$(date +%F).sql"
 
       - name: Upload to R2
         run: |
