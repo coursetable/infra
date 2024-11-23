@@ -4,8 +4,8 @@ services:
     container_name: traefik
     restart: always
     ports:
-      - 80:80     # The HTTP port
-      - 443:443   # The HTTPS port
+      - 80:80 # The HTTP port
+      - 443:443 # The HTTPS port
       - 8044:8080 # The traefik web UI
     networks:
       - traefik

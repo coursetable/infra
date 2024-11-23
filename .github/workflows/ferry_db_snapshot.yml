@@ -4,10 +4,10 @@ on:
   push:
     branches: [main]
     paths:
-      - 'db/**'
-      - '.github/workflows/ferry_db_snapshot.yml'
+      - "db/**"
+      - ".github/workflows/ferry_db_snapshot.yml"
   schedule:
-    - cron: '0 0 * * 1' # Every Monday
+    - cron: "0 0 * * 1" # Every Monday
   workflow_dispatch:
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
       - name: Upload to R2
         run: |
           rclone copy "/home/app/ferry_snapshots/$(date +%F).sql" r2:ferry-backup/
-      
+
       - name: Create R2 Signed URL
         run: |
           rclone link "r2:ferry-backup/$(date +%F).sql" | grep -o 'https://[^"]*' > output.txt
@@ -30,7 +30,7 @@ jobs:
         run: |
           doppler setup -p coursetable -c dev
           doppler secrets set FERRY_DUMP_URL="$(cat output.txt)" > /dev/null
-        
+
       - name: Delete Old Snapshots
         run: |
           find /home/app/ferry_snapshots -type f -mtime +30 -delete
