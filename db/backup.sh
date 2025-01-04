@@ -14,7 +14,7 @@ else
 fi
 
 doppler setup -p coursetable -c prod
-docker exec db pg_dump -U postgres -d coursetable -n public > /tmp/coursetable.sql
+docker exec db pg_dump -U postgres -d coursetable_data -n public > /tmp/coursetable.sql
 
 pushd /tmp > /dev/null
 tar -czf "$BACKUP_TAR_GZ_FILE" coursetable.sql
