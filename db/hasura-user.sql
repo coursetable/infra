@@ -23,8 +23,7 @@ BEGIN
                     'hasura') AS cmd
       FROM pg_proc p
       JOIN pg_namespace n ON p.pronamespace = n.oid
-      WHERE n.nspname = 'hdb_catalog';
-   LOOP
+      WHERE n.nspname = 'hdb_catalog' LOOP
       EXECUTE obj.cmd;
    END LOOP;
 END $$;
