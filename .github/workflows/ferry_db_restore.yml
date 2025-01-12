@@ -1,0 +1,14 @@
+name: Ferry DB Snapshot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: self-hosted
+    steps:
+      - name: Ferry DB Restore
+        run: |
+          cd /home/app/infra/db
+          git pull
+          bash restore-ferry.sh

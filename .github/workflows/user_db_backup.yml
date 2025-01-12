@@ -17,4 +17,5 @@ jobs:
       - name: Backup User DB
         run: |
           cd /home/app/infra/db
+          git pull
           bash cron_script.sh
