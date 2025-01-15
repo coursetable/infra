@@ -24,6 +24,10 @@ services:
       - db
       - traefik
       - api_services
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   redis:
     restart: always
@@ -40,6 +44,10 @@ services:
       retries: 60
     networks:
       - api_services
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   api_services:

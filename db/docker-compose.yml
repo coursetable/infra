@@ -15,6 +15,10 @@ services:
       - /home/app/db/data:/var/lib/postgresql/data
     networks:
       - db
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -35,6 +39,10 @@ services:
     networks:
       - db
       - traefik
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   pgbouncer:
     build:
@@ -58,6 +66,10 @@ services:
       - "5432:5432"
     networks:
       - db
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   traefik:
