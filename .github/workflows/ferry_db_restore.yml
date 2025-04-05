@@ -1,4 +1,4 @@
-name: Ferry DB Snapshot
+name: Ferry DB Restore
 
 on:
   workflow_dispatch:
