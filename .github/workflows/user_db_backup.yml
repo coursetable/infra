@@ -19,3 +19,11 @@ jobs:
           cd /home/app/infra/db
           git pull
           bash cron_script.sh
+
+  workflow-keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: liskin/gh-workflow-keepalive@v1
