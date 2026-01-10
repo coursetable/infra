@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       backup_path:
-        description: 'Path to SQL dump file (e.g., /home/app/ferry_snapshots/2025-12-29.sql). Leave empty for latest backup.'
+        description: 'Filename (e.g., 2025-12-29.sql). Leave empty for latest backup.'
         required: false
         type: string
 
