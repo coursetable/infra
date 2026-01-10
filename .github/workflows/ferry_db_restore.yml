@@ -2,6 +2,11 @@ name: Ferry DB Restore
 
 on:
   workflow_dispatch:
+    inputs:
+      backup_path:
+        description: 'Filename (e.g., 2025-12-29.sql). Leave empty for latest backup.'
+        required: false
+        type: string
 
 jobs:
   backup:
@@ -11,4 +16,8 @@ jobs:
         run: |
           cd /home/app/infra/db
           git pull
-          bash restore-ferry.sh
+          if [ -n "${{ github.event.inputs.backup_path }}" ]; then
+            bash restore-ferry.sh "${{ github.event.inputs.backup_path }}"
+          else
+            bash restore-ferry.sh
+          fi
