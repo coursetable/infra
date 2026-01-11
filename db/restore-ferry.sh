@@ -5,7 +5,7 @@ set -euo pipefail
 if [ $# -gt 0 ]; then
     BACKUP_TO_RESTORE="/home/app/ferry_snapshots/$1"
 else
-    export LATEST_BACKUP=$(ls -Art /home/app/ferry_snapshots/*.sql | tail -n 1)
+    export LATEST_BACKUP=$(ls -Art /home/app/ferry_snapshots | tail -n 1)
     BACKUP_TO_RESTORE="/home/app/ferry_snapshots/$LATEST_BACKUP"
 fi
 
