@@ -6,13 +6,20 @@ This directory manages CourseTable's zone-level Cloudflare configuration. The fi
 
 `cloudflare_ruleset.link_preview` owns the complete `http_request_transform` phase for `coursetable.com`. Cloudflare and Terraform both require all URL Transform Rules in that phase to live in a single ruleset. **Import the existing production ruleset before running `terraform apply`.** Creating a second unmanaged resource or applying before import can conflict with the live rules.
 
-Terraform state and credentials must not be committed. Before production use, configure a shared remote state backend. Wrangler OAuth and the existing Pages deployment token do not grant the Rulesets permissions Terraform needs. Store a separate, narrowly scoped token in the `coursetable/prod` Doppler config as `CLOUDFLARE_TERRAFORM_API_TOKEN`.
+Terraform state and credentials must not be committed. State is stored in the private `coursetable-terraform-state` R2 bucket at `cloudflare/terraform.tfstate`; Terraform's native S3 lockfile prevents concurrent writes. R2 does not support bucket versioning, which is an accepted tradeoff for this small state file.
+
+Wrangler OAuth and the existing Pages deployment token do not grant the Rulesets permissions Terraform needs. Store a separate, narrowly scoped token in the `coursetable/prod` Doppler config as `CLOUDFLARE_TERRAFORM_API_TOKEN`.
 
 Required token permissions:
 
 - Zone / Zone / Read for `coursetable.com`
 - Zone / Transform Rules / Edit for `coursetable.com`
 - Account / Account Rulesets / Read
+
+The R2 backend also uses a bucket-scoped Object Read & Write API token. Store its S3 credentials in the same Doppler config as:
+
+- `CLOUDFLARE_R2_TERRAFORM_ACCESS_KEY_ID`
+- `CLOUDFLARE_R2_TERRAFORM_SECRET_ACCESS_KEY`
 
 Use the wrapper to map that Doppler secret to the environment variable expected by the provider:
 
@@ -26,7 +33,7 @@ Initialize the provider:
 
 ```sh
 cd cloudflare
-terraform init
+./terraform.sh init
 ```
 
 The production zone-level `http_request_transform` ruleset was imported with:

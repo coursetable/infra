@@ -6,7 +6,7 @@ The infrastructure is currently designed to provision on a monolithic VM. Howeve
 
 Each directory denotes a separate Docker Compose configuration, each with its own network.
 
-Cloudflare zone configuration is managed separately under [`cloudflare/`](cloudflare/). See its README before planning or applying changes; the existing production ruleset must be imported before Terraform can manage it safely.
+Cloudflare zone configuration is managed separately under [`cloudflare/`](cloudflare/) with shared state in R2. See its README before planning or applying changes.
 
 Below is the list of every network and its attached services (including those defined in [coursetable](https://github.com/coursetable/coursetable/)):
 
