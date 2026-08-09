@@ -1,2 +1,12 @@
 db/db_dumps/*
 node_modules
+
+# Local Cloudflare CLI data.
+.wrangler/
+
+# Terraform working data and local state. Provider lock files are committed.
+cloudflare/.terraform/
+cloudflare/*.tfstate
+cloudflare/*.tfstate.*
+cloudflare/*.tfvars
+!cloudflare/*.tfvars.example
