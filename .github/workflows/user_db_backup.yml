@@ -23,9 +23,13 @@ jobs:
           git pull
           bash cron_script.sh
 
-      - name: Signal result
-        if: always()
-        run: curl -fsS -m 10 --retry 5 -o /dev/null "${{ secrets.HC_PING_USER_BACKUP }}${{ job.status == 'success' && '' || '/fail' }}"
+      - name: Signal success
+        if: success()
+        run: curl -fsS -m 10 --retry 5 -o /dev/null "${{ secrets.HC_PING_USER_BACKUP }}"
+
+      - name: Signal failure
+        if: failure()
+        run: curl -fsS -m 10 --retry 5 -o /dev/null "${{ secrets.HC_PING_USER_BACKUP }}/fail"
 
   workflow-keepalive:
     if: github.event_name == 'schedule'
