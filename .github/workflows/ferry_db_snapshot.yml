@@ -14,6 +14,9 @@ jobs:
   backup:
     runs-on: self-hosted
     steps:
+      - name: Signal start
+        run: curl -fsS -m 10 --retry 5 -o /dev/null "${{ secrets.HC_PING_FERRY_SNAPSHOT }}/start"
+
       - name: Dump Ferry DB
         run: |
           docker exec db pg_dump -U postgres -x ferry > "/home/app/ferry_snapshots/$(date +%F).sql"
@@ -24,7 +27,7 @@ jobs:
 
       - name: Create R2 Signed URL
         run: |
-          rclone link "r2:ferry-backup/$(date +%F).sql" | grep -o 'https://[^"]*' > output.txt
+          rclone link --expire 720h "r2:ferry-backup/$(date +%F).sql" | grep -o 'https://[^"]*' > output.txt
 
       - name: Update Doppler Secret
         run: |
@@ -34,6 +37,10 @@ jobs:
       - name: Delete Old Snapshots
         run: |
           find /home/app/ferry_snapshots -type f -mtime +30 -delete
+
+      - name: Signal result
+        if: always()
+        run: curl -fsS -m 10 --retry 5 -o /dev/null "${{ secrets.HC_PING_FERRY_SNAPSHOT }}${{ job.status == 'success' && '' || '/fail' }}"
 
   workflow-keepalive:
     if: github.event_name == 'schedule'

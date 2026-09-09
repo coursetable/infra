@@ -14,11 +14,18 @@ jobs:
   backup:
     runs-on: self-hosted
     steps:
+      - name: Signal start
+        run: curl -fsS -m 10 --retry 5 -o /dev/null "${{ secrets.HC_PING_USER_BACKUP }}/start"
+
       - name: Backup User DB
         run: |
           cd /home/app/infra/db
           git pull
           bash cron_script.sh
+
+      - name: Signal result
+        if: always()
+        run: curl -fsS -m 10 --retry 5 -o /dev/null "${{ secrets.HC_PING_USER_BACKUP }}${{ job.status == 'success' && '' || '/fail' }}"
 
   workflow-keepalive:
     if: github.event_name == 'schedule'
